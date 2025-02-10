@@ -13,4 +13,8 @@
 #define PLAYER_ODSKOK_RIGHT_TEXTURE "assets/blue-lik-right-odskok@2x.png"
 #define GAME_TILES "assets/game-tiles@2x.png"
 
+#define JUMP_SOUND "assets/jump.wav"
+#define JUMPER_SOUND "assets/feder.wav"
+#define FALL_SOUND "assets/pada.wav"
+
 #endif //ASSETS_P_H

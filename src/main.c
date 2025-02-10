@@ -8,6 +8,7 @@
 #include "objects/player.h"
 #include "objects/world.h"
 #include "config.h"
+#include "objects/audio_controller.h"
 
 SDL_Window *window;
 SDL_Renderer *renderer;
@@ -46,6 +47,8 @@ int main()
 }
 
 void game_setup() {
+    audio_controller_init();
+
     player_init(&player, renderer);
     player.position.x = WINDOW_WIDTH / 2 - 64 / 2;
     player.position.y = WINDOW_HEIGHT / 2 - 64;

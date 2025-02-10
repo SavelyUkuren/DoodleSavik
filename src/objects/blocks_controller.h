@@ -13,6 +13,7 @@
 #include "world.h"
 #include "jumpers_controller.h"
 #include "player.h"
+#include "audio_controller.h"
 
 typedef struct block_t {
     point position;

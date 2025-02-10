@@ -12,6 +12,7 @@
 #include "../config.h"
 #include "world.h"
 #include "player.h"
+#include "audio_controller.h"
 
 typedef struct jumper_t {
     point position;
