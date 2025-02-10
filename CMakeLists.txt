@@ -23,6 +23,12 @@ add_executable(DoodleSavik src/main.c
         src/objects/assets_controller.c
         src/objects/assets_controller.h
         src/assets_p.h
+        src/objects/blocks_controller.c
+        src/objects/blocks_controller.h
+        src/objects/jumpers_controller.c
+        src/objects/jumpers_controller.h
+        src/objects/background.c
+        src/objects/background.h
 )
 
 target_link_libraries(DoodleSavik SDL3::SDL3 SDL3_image::SDL3_image)

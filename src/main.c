@@ -70,7 +70,7 @@ void game_loop() {
         Uint64 freq = SDL_GetPerformanceFrequency();
 
         delta = (float)(now - last_time) / freq;
-        last_time = now;
+
 
         Uint64 start = SDL_GetPerformanceCounter();
 
@@ -106,7 +106,7 @@ void game_loop() {
         render_player_vel(renderer, &player);
 
         SDL_RenderPresent(renderer);
-
+        last_time = now;
     }
 }
 
