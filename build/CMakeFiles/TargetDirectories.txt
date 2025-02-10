@@ -1,0 +1,3 @@
+/home/savely/Загрузки/Telegram Desktop/DoodleSavik/DoodleSavik/build/CMakeFiles/DoodleSavik.dir
+/home/savely/Загрузки/Telegram Desktop/DoodleSavik/DoodleSavik/build/CMakeFiles/edit_cache.dir
+/home/savely/Загрузки/Telegram Desktop/DoodleSavik/DoodleSavik/build/CMakeFiles/rebuild_cache.dir
