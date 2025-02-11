@@ -101,6 +101,7 @@ void player_on_jumper(player_t *player, float delta) {
                 player->position.y = r_jumper.y - r_player.h;
                 player->is_on_block = true;
                 jumpers[i].is_jumping = true;
+                play_jumper_sound();
             }
         }
     }

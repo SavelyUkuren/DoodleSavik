@@ -4,6 +4,7 @@ project(DoodleSavik LANGUAGES C)
 
 find_package(SDL3 REQUIRED)
 find_package(SDL3_image REQUIRED)
+find_package(SDL3_mixer REQUIRED)
 
 file(COPY ${CMAKE_SOURCE_DIR}/assets DESTINATION ${CMAKE_BINARY_DIR})
 
@@ -29,9 +30,12 @@ add_executable(DoodleSavik src/main.c
         src/objects/jumpers_controller.h
         src/objects/background.c
         src/objects/background.h
+        src/objects/audio_controller.c
+        src/objects/audio_controller.h
+        src/assets_p.c
 )
 
-target_link_libraries(DoodleSavik SDL3::SDL3 SDL3_image::SDL3_image)
+target_link_libraries(DoodleSavik SDL3::SDL3 SDL3_image::SDL3_image SDL3_mixer::SDL3_mixer)
 
 if (UNIX)
     target_link_libraries(DoodleSavik m)

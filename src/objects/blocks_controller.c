@@ -84,6 +84,7 @@ void player_on_block(player_t *player, float delta) {
                 player->velocity.dy = PLAYER_JUMP_FORCE;
                 player->position.y = r_block.y - r_player.h;
                 player->is_on_block = true;
+                play_jump_sound();
             }
 
         }

@@ -57,6 +57,9 @@ void player_logic(player_t *player, float delta) {
         break;
     }
     player->velocity.dy += (float)GRAVITY * delta;
+    if (player->velocity.dy > 10) {
+        player->velocity.dy = 10;
+    }
 
     if (player->velocity.dx >= PLAYER_MAX_SPEED) {
         player->velocity.dx = PLAYER_MAX_SPEED;
@@ -67,6 +70,13 @@ void player_logic(player_t *player, float delta) {
 
     player->position.y += player->velocity.dy * 60 * delta;
     player->position.x += player->velocity.dx * delta;
+
+    if (player->position.x + player->size.w / 2 + 2 > WINDOW_WIDTH) {
+        player->position.x = -player->size.w / 2 + 4;
+    }
+    if (player->position.x + player->size.w / 2 < 0) {
+        player->position.x = WINDOW_WIDTH - player->size.w / 2 - 4;
+    }
 
     snprintf(score_text, sizeof(score_text), "Score: %d", player->score);
 

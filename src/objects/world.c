@@ -7,6 +7,8 @@
 float world_offset_y = 0;
 SDL_Texture *game_tiles;
 
+bool is_game_over = false;
+
 void world_init(world_t *world, SDL_Renderer *renderer) {
 
     game_tiles = IMG_LoadTexture(renderer, GAME_TILES);
@@ -27,6 +29,12 @@ void world_logic(world_t *world, float delta) {
     jumpers_update(delta);
     player_on_block(world->player, delta);
     player_on_jumper(world->player, delta);
+
+    if (world->player->position.y + world->player->size.h > WINDOW_HEIGHT
+        && !is_game_over) {
+        is_game_over = true;
+        play_fall_sound();
+    }
 }
 
 void render_world(SDL_Renderer *renderer, world_t *world) {
