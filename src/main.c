@@ -32,9 +32,10 @@ void render_player_vel(SDL_Renderer *renderer, player_t *player);
 player_t player;
 world_t world;
 
-int main()
+int main(int argc, char *argv[])
 {
-    srand(2);
+    srand(time(NULL));
+    load_assets_paths(argv);
 
     if (create_window() != 0) return 1;
     if (create_renderer() != 0) return 1;
@@ -139,6 +140,7 @@ int create_renderer() {
 void destroy_sdl() {
     world_destroy(&world);
     destroy_player(&player);
+    free_assets();
 
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);

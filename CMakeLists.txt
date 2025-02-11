@@ -32,6 +32,7 @@ add_executable(DoodleSavik src/main.c
         src/objects/background.h
         src/objects/audio_controller.c
         src/objects/audio_controller.h
+        src/assets_p.c
 )
 
 target_link_libraries(DoodleSavik SDL3::SDL3 SDL3_image::SDL3_image SDL3_mixer::SDL3_mixer)
