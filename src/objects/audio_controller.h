@@ -8,6 +8,7 @@
 #include <SDL3_mixer/SDL_mixer.h>
 
 #include "../assets_p.h"
+#include "../config.h"
 
 void audio_controller_init();
 

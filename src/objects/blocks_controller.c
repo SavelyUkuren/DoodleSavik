@@ -75,7 +75,8 @@ void blocks_update(float delta) {
 
     movable_block_generator_time += delta;
     if (movable_block_generator_time >= 1) {
-        if (random_from_range(0, 100) < 30) {
+        float probability = fmin(map_value(player.score, 0, 6000, 30, 80), 80);
+        if (random_from_range(0, 100) < probability) {
             int block_index = -1;
             for (int j = 0 ; j < blocks_count; j++) {
                 if (blocks[j].position.y < 0) {
@@ -231,7 +232,7 @@ void render_blocks(SDL_Renderer *renderer) {
 }
 
 point new_block_position() {
-    float min_distance = map_value(player.score, 0, 4000, 30, 170);
+    float min_distance = fmin(map_value(player.score, 0, 10000, 30, 120), 120);
     point p;
     p.x = (float)random_from_range(8, WINDOW_WIDTH - 100 - 8);
     p.y = blocks[blocks_count - 1].position.y - (float)random_from_range(min_distance, 130);

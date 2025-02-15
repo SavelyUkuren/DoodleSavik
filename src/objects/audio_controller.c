@@ -39,15 +39,18 @@ void audio_controller_init() {
 }
 
 void play_jump_sound() {
-    Mix_PlayChannel(-1, jump_sound, 0);
+    if (SOUND_ON)
+        Mix_PlayChannel(-1, jump_sound, 0);
 }
 
 void play_jumper_sound() {
-    Mix_PlayChannel(-1, jumper_sound, 0);
+    if (SOUND_ON)
+        Mix_PlayChannel(-1, jumper_sound, 0);
 }
 
 void play_fall_sound() {
-    Mix_PlayChannel(-1, fall_sound, 0);
+    if (SOUND_ON)
+        Mix_PlayChannel(-1, fall_sound, 0);
 }
 
 void destroy_audio() {

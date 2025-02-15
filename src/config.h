@@ -5,6 +5,7 @@
 #define WINDOW_HEIGHT 640
 #define WINDOW_TITLE "DoodleSavik"
 #define ENABLE_VSYNC true
+#define SOUND_ON false
 
 #define GRAVITY 13.81
 #define GAME_SCALE 1.5
