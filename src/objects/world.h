@@ -6,8 +6,8 @@
 #define WORLD_H
 
 #include <stdio.h>
+#include <SDL3_image/SDL_image.h>
 
-#include "../libs/SDL_image.h"
 #include "../common/point.h"
 #include "../common/object_size.h"
 #include "../common/rect_t.h"

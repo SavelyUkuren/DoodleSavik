@@ -6,9 +6,9 @@
 #define BACKGROUND_H
 
 #include <SDL3/SDL.h>
+#include <SDL3_image/SDL_image.h>
 #include <stdio.h>
 
-#include "../libs/SDL_image.h"
 #include "../common/point.h"
 #include "../config.h"
 #include "../assets_p.h"

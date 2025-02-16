@@ -2,6 +2,7 @@
 #define PLAYER_H
 
 #include <SDL3/SDL.h>
+#include <SDL3_image/SDL_image.h>
 #include <stdio.h>
 
 #include "../common/point.h"
@@ -9,7 +10,6 @@
 #include "../common/vec2.h"
 #include "../config.h"
 #include "../assets_p.h"
-#include "../libs/SDL_image.h"
 
 typedef enum player_direction {
     NONE,

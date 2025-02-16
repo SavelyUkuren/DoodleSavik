@@ -2,8 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <SDL3/SDL.h>
-
-#include "libs/SDL_image.h"
+#include <SDL3_image/SDL_image.h>
 
 #include "objects/player.h"
 #include "objects/world.h"

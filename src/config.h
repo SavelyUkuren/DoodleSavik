@@ -4,7 +4,7 @@
 #define WINDOW_WIDTH 480
 #define WINDOW_HEIGHT 640
 #define WINDOW_TITLE "DoodleSavik"
-#define ENABLE_VSYNC true
+#define ENABLE_VSYNC false
 #define SOUND_ON false
 
 #define GRAVITY 13.81

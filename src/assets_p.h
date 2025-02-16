@@ -6,7 +6,11 @@
 #define ASSETS_P_H
 
 #include <unistd.h>
-#include <sys/syslimits.h>
+#ifdef __APPLE__
+    #include <sys/syslimits.h>  // Для macOS
+#else
+    #include <limits.h>  // Для Linux
+#endif
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
