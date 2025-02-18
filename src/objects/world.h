@@ -16,7 +16,6 @@
 #include "../common/s_random.h"
 #include "../assets_p.h"
 #include "blocks_controller.h"
-#include "jumpers_controller.h"
 #include "background.h"
 #include "player.h"
 

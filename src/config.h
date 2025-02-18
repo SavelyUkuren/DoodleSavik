@@ -4,8 +4,8 @@
 #define WINDOW_WIDTH 480
 #define WINDOW_HEIGHT 640
 #define WINDOW_TITLE "DoodleSavik"
-#define ENABLE_VSYNC false
-#define SOUND_ON false
+#define ENABLE_VSYNC true
+#define SOUND_ON true
 
 #define GRAVITY 13.81
 #define GAME_SCALE 1.5
@@ -15,7 +15,7 @@
 #define PLAYER_JUMP_FORCE -10
 #define PLAYER_ON_JUMPER_FORCE -16
 
-#define JUMPER_PROBALITY 13 //%
+#define JUMPER_PROBALITY 11 //%
 #define MOVABLE_BLOCK_VELOCITY_MIN 70
 #define MOVABLE_BLOCK_VELOCITY_MAX 180
 

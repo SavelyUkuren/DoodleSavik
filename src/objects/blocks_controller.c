@@ -6,23 +6,16 @@
 
 #include <stdlib.h>
 
-
-const int blocks_count = 20;
-block_t *blocks;
-
-const int movable_blocks_count = 5;
-movable_block_t *movable_blocks;
+block_t blocks[BLOCKS_COUNT];
 
 float movable_block_generator_time = 0;
 
 void blocks_init() {
 
-    blocks = malloc(sizeof(block_t) * blocks_count);
-
     point last_block_pos;
     last_block_pos.x = (float)random_from_range(8, WINDOW_WIDTH - 100 - 8);
     last_block_pos.y = WINDOW_HEIGHT - 20;
-    for (int i = 0 ; i < blocks_count ; i++) {
+    for (int i = 0 ; i < BLOCKS_COUNT ; i++) {
         block_t block;
         int r = random_from_range(50, 100);
         block.position.x = (float)random_from_range(8, WINDOW_WIDTH - 100 - 8);
@@ -31,126 +24,44 @@ void blocks_init() {
         block.size.w = 59 * GAME_SCALE;
         block.size.h = 17 * GAME_SCALE;
         blocks[i] = block;
-    }
+        blocks[i].type = STATIC_BLOCK;
+        blocks[i].is_movable = false;
+        blocks[i].velocity.dx = 0;
+        blocks[i].velocity.dy = 0;
 
-    movable_blocks = malloc(sizeof(movable_block_t) * movable_blocks_count);
-    for (int i = 0 ; i < movable_blocks_count ; i++) {
-        movable_block_t block;
-        block.position.x = -100;
-        block.position.y = -100;
-        block.is_currently_uses = false;
-        block.direction = BLOCK_DIR_LEFT;
-        block.size.w = 59 * GAME_SCALE;
-        block.size.h = 17 * GAME_SCALE;
-        block.velocity.dx = 0;
-        block.velocity.dy = 0;
-        movable_blocks[i] = block;
+        jumper_t jumper;
+        jumper.size.w = 18 * GAME_SCALE;
+        jumper.size.h = 12 * GAME_SCALE;
+        jumper.position.x = -1000;
+        jumper.position.y = -1000;
+        jumper.is_currently_uses = false;
+        jumper.current_time_for_reset = 0;
+        jumper.is_jumping = false;
+        blocks[i].has_jumper = false;
+        blocks[i].jumper = jumper;
     }
 
 }
 
 void blocks_update(float delta) {
 
-    for (int i = 0 ; i < blocks_count ; i++) {
-        block_t block = blocks[i];
-        if (block.position.y > WINDOW_HEIGHT) {
-            blocks[i].position = new_block_position();
-            blocks[blocks_count - 1] = blocks[i];
-
-            //with some probability(JUMPER_PROBALITY) we add jumper to block
-            if (random_from_range(0, 100) < JUMPER_PROBALITY) {
-                for (int j = 0 ; j < jumpers_count ; j++) {
-                    if (!jumpers[j].is_currently_uses) {
-                        float random_jumper_pos_x = (float)random_from_range(0, block.size.w - jumpers[j].size.w);
-                        jumpers[j].position.x = blocks[i].position.x + random_jumper_pos_x;
-                        jumpers[j].position.y = blocks[i].position.y - jumpers[j].size.h + 3;
-                        jumpers[j].is_currently_uses = true;
-                        break;
-                    }
-                }
-            }
-
-        }
-    }
-
-    movable_block_generator_time += delta;
-    if (movable_block_generator_time >= 1) {
-        float probability = fmin(map_value(player.score, 0, 6000, 30, 80), 80);
-        if (random_from_range(0, 100) < probability) {
-            int block_index = -1;
-            for (int j = 0 ; j < blocks_count; j++) {
-                if (blocks[j].position.y < 0) {
-                    block_index = j;
-                    break;
-                }
-            }
-
-            if (block_index != -1) {
-                int movable_block_index = -1;
-                for (int j = 0 ; j < movable_blocks_count; j++) {
-                    if (!movable_blocks[j].is_currently_uses) {
-                        movable_block_index = j;
-                        break;
-                    }
-                }
-                if (movable_block_index != -1) {
-                    movable_blocks[movable_block_index].position = blocks[block_index].position;
-                    movable_blocks[movable_block_index].is_currently_uses = true;
-                    movable_blocks[movable_block_index].velocity.dx = random_dx_velocity();
-                    blocks[block_index].position = new_block_position();
-                    blocks[blocks_count - 1] = blocks[block_index];
-                }
-            }
-        }
-        movable_block_generator_time = 0;
-    }
-
-    for (int i = 0 ; i < movable_blocks_count ; i++) {
-        if (movable_blocks[i].is_currently_uses) {
-            point p = movable_blocks[i].position;
-            object_size size = movable_blocks[i].size;
-
-            if (p.x + size.w + 12 >= WINDOW_WIDTH) {
-                movable_blocks[i].direction = BLOCK_DIR_LEFT;
-            }
-            if (p.x - 12 <= 0) {
-                movable_blocks[i].direction = BLOCK_DIR_RIGHT;
-            }
-
-            if (movable_blocks[i].direction == BLOCK_DIR_LEFT) {
-                movable_blocks[i].velocity.dx *= movable_blocks[i].velocity.dx < 0 ? 1 : -1;
-            }
-            if (movable_blocks[i].direction == BLOCK_DIR_RIGHT) {
-                movable_blocks[i].velocity.dx *= movable_blocks[i].velocity.dx > 0 ? 1 : -1;
-            }
-            movable_blocks[i].position.x += movable_blocks[i].velocity.dx * delta;
-
-            if (movable_blocks[i].position.y > WINDOW_HEIGHT) {
-                movable_blocks[i].is_currently_uses = false;
-                movable_blocks[i].position.x = -1000;
-                movable_blocks[i].position.y = -1000;
-                movable_blocks[i].velocity.dx = 0;
-            }
-        }
-
-    }
-
-
+    generate_new_blocks(delta);
+    update_movable_blocks(delta);
+    update_jumpers(delta);
 }
 
 void blocks_offset(float offset, float delta) {
-    for (int i = 0 ; i < blocks_count ; i++) {
+    for (int i = 0 ; i < BLOCKS_COUNT ; i++) {
         blocks[i].position.y += offset;
-    }
-    for (int i = 0 ; i < movable_blocks_count ; i++) {
-        movable_blocks[i].position.y += offset;
+        if (blocks[i].has_jumper) {
+            blocks[i].jumper.position.y += offset;
+        }
     }
 }
 
 void player_on_block(player_t *player, float delta) {
     player->is_on_block = false;
-    for (int i = 0 ; i < blocks_count ; i++) {
-
+    for (int i = 0 ; i < BLOCKS_COUNT ; i++) {
         if (player->velocity.dy > 0) {
             block_t *block = &blocks[i];
 
@@ -161,81 +72,168 @@ void player_on_block(player_t *player, float delta) {
                 player->size.h
             };
 
-            rect_t r_block = {
-                block->position.x,
-                block->position.y,
-                block->size.w,
-                block->size.h
-            };
+            if (block->has_jumper) {
+                rect_t r_jumper = {
+                    block->jumper.position.x,
+                    block->jumper.position.y,
+                    block->size.w,
+                    block->size.h
+                };
 
-            if (is_on_top(&r_player, &r_block, player->velocity.dy)) {
-                player->velocity.dy = PLAYER_JUMP_FORCE;
-                player->position.y = r_block.y - r_player.h;
-                player->is_on_block = true;
-                play_jump_sound();
+                if (is_on_top(&r_player, &r_jumper, player->velocity.dy)) {
+                    player_jump(player, PLAYER_ON_JUMPER_FORCE);
+                    block->jumper.is_jumping = true;
+                    player->position.y = r_jumper.y - r_player.h;
+                    play_jumper_sound();
+                }
+
+            } else {
+                rect_t r_block = {
+                    block->position.x,
+                    block->position.y,
+                    block->size.w,
+                    block->size.h
+                };
+
+                if (is_on_top(&r_player, &r_block, player->velocity.dy)) {
+                    player_jump(player, PLAYER_JUMP_FORCE);
+                    player->position.y = r_block.y - r_player.h;
+                    play_jump_sound();
+                }
             }
 
-        }
-    }
-    if (player->velocity.dy > 0) {
-        for (int i = 0 ; i < movable_blocks_count ; i++) {
-            rect_t r_player = {
-                player->position.x,
-                player->position.y,
-                player->size.w,
-                player->size.h
-            };
-
-            rect_t r_block = {
-                movable_blocks[i].position.x,
-                movable_blocks[i].position.y,
-                movable_blocks[i].size.w,
-                movable_blocks[i].size.h
-            };
-
-            if (is_on_top(&r_player, &r_block, player->velocity.dy)) {
-                player->velocity.dy = PLAYER_JUMP_FORCE;
-                player->position.y = r_block.y - r_player.h;
-                player->is_on_block = true;
-                play_jump_sound();
-            }
         }
     }
 }
 
 void render_blocks(SDL_Renderer *renderer) {
-    for (int i = 0 ; i < blocks_count ; i++) {
+    for (int i = 0 ; i < BLOCKS_COUNT ; i++) {
+        SDL_FRect r1 = {blocks[i].position.x,
+                        blocks[i].position.y,
+                        blocks[i].size.w,
+                        blocks[i].size.h};
+
+        if (blocks[i].type == STATIC_BLOCK) {
+
+            SDL_FRect src_rect = {0, 0, 118, 34};
+            SDL_RenderTexture(renderer, game_tiles, &src_rect, &r1);
+
+        } else if (blocks[i].type == MOVABLE_BLOCK) {
+
+            SDL_FRect src_rect =  {0, 34, 118, 34};
+            SDL_RenderTexture(renderer, game_tiles, &src_rect, &r1);
+
+        }
+
+        if (blocks[i].has_jumper) {
+            SDL_FRect jumper_r = {
+                blocks[i].jumper.position.x,
+                blocks[i].jumper.position.y,
+                blocks[i].jumper.size.w,
+                blocks[i].jumper.size.h
+            };
+
+            SDL_FRect src_rect;
+            if (blocks[i].jumper.is_jumping) {
+                src_rect.x = 806;
+                src_rect.y = 229;
+                src_rect.w = 36;
+                src_rect.h = 57;
+
+                jumper_r.h = 30;
+                jumper_r.y -= (float)(16 / GAME_SCALE);
+            } else {
+                src_rect.x = 806;
+                src_rect.y = 196;
+                src_rect.w = 36;
+                src_rect.h = 25;
+            }
+            SDL_RenderTexture(renderer, game_tiles, &src_rect, &jumper_r);
+        }
+    }
+
+}
+
+void generate_new_blocks(float delta) {
+    for (int i = 0 ; i < BLOCKS_COUNT ; i++) {
         block_t block = blocks[i];
-        SDL_FRect r1 = {block.position.x,
-                        block.position.y,
-                        block.size.w,
-                        block.size.h};
+        if (block.position.y > WINDOW_HEIGHT) {
+            blocks[i].type = STATIC_BLOCK;
+            blocks[i].is_movable = false;
+            blocks[i].velocity.dx = 0;
+            blocks[i].position = new_block_position();
+            blocks[BLOCKS_COUNT - 1] = blocks[i];
+            blocks[i].has_jumper = false;
 
-        SDL_FRect src_rect = {0, 0, 118, 34};
-        SDL_RenderTexture(renderer, game_tiles, &src_rect, &r1);
-        //SDL_RenderFillRect(renderer, &r1);
+            if (random_from_range(0, 100) < movable_block_probability(player.score)) {
+                blocks[i].type = MOVABLE_BLOCK;
+                blocks[i].is_movable = true;
+                blocks[i].direction = BLOCK_DIR_LEFT;
+                blocks[i].velocity.dx = random_dx_velocity();
+            }
+
+            if (random_from_range(0, 100) < JUMPER_PROBALITY && !blocks[i].has_jumper) {
+                blocks[i].has_jumper = true;
+                float random_x = random_from_range(blocks[i].position.x, blocks[i].position.x + blocks[i].size.w - blocks[i].jumper.size.w);
+                blocks[i].jumper.position.x = random_x;
+                blocks[i].jumper.position.y = blocks[i].position.y - blocks[i].jumper.size.h + 4;
+            }
+
+
+        }
     }
+}
 
-    for (int i = 0 ; i < movable_blocks_count ; i++) {
+void update_movable_blocks(float delta) {
+    for (int i = 0 ; i < BLOCKS_COUNT ; i++) {
+        if (blocks[i].type == MOVABLE_BLOCK) {
+            if (blocks[i].position.x + blocks[i].size.w + 12 >= WINDOW_WIDTH) {
+                blocks[i].direction = BLOCK_DIR_LEFT;
+            }
+            if (blocks[i].position.x - 12 <= 0) {
+                blocks[i].direction = BLOCK_DIR_RIGHT;
+            }
 
-        SDL_FRect mov_block_rect = {
-            movable_blocks[i].position.x,
-            movable_blocks[i].position.y,
-            movable_blocks[i].size.w,
-            movable_blocks[i].size.h};
-
-        SDL_FRect src_rect = {0, 34, 118, 34};
-        SDL_RenderTexture(renderer, game_tiles, &src_rect, &mov_block_rect);
-
+            if (blocks[i].direction == BLOCK_DIR_LEFT) {
+                blocks[i].velocity.dx *= blocks[i].velocity.dx < 0 ? 1 : -1;
+            }
+            if (blocks[i].direction == BLOCK_DIR_RIGHT) {
+                blocks[i].velocity.dx *= blocks[i].velocity.dx > 0 ? 1 : -1;
+            }
+            blocks[i].position.x += blocks[i].velocity.dx * delta;
+            if (blocks[i].has_jumper) {
+                blocks[i].jumper.position.x += blocks[i].velocity.dx * delta;
+            }
+        }
     }
+}
 
+void update_jumpers(float delta) {
+    for (int i = 0 ; i < BLOCKS_COUNT ; i++) {
+        if (blocks[i].has_jumper) {
+            if (blocks[i].position.y > WINDOW_HEIGHT) {
+                blocks[i].has_jumper = false;
+                blocks[i].position.x = -1000;
+                blocks[i].position.y = -1000;
+                blocks[i].jumper.is_jumping = false;
+                blocks[i].jumper.current_time_for_reset = 0;
+            }
+
+            if (blocks[i].jumper.is_jumping && blocks[i].jumper.current_time_for_reset < 0.5) {
+                blocks[i].jumper.current_time_for_reset += delta;
+            } else {
+                blocks[i].jumper.current_time_for_reset = 0;
+                blocks[i].jumper.is_jumping = false;
+            }
+        }
+    }
 }
 
 point new_block_position() {
     float min_distance = fmin(map_value(player.score, 0, 10000, 30, 120), 120);
     point p;
     p.x = (float)random_from_range(8, WINDOW_WIDTH - 100 - 8);
-    p.y = blocks[blocks_count - 1].position.y - (float)random_from_range(min_distance, 130);
+    p.y = blocks[BLOCKS_COUNT - 1].position.y - (float)random_from_range(min_distance, 130);
     return p;
 }
 
@@ -256,7 +254,14 @@ int ray_intersects_block(rect_t *r_player, rect_t *r_block, float direction) {
     }
 }
 
+int movable_block_probability(int by_score) {
+    return fmin(map_value(player.score, 0, 10000, 20, 60), 60);
+}
+
+int jumper_probability(int by_score) {
+
+}
+
 void destroy_blocks() {
-    free(blocks);
-    free(movable_blocks);
+
 }

@@ -130,6 +130,11 @@ void render_player(SDL_Renderer *renderer, player_t *player) {
     SDL_RenderDebugText(renderer, 10, 50, score_text);
 }
 
+void player_jump(player_t *player, float with_force) {
+    player->velocity.dy = with_force;
+    player->is_on_block = true;
+}
+
 void destroy_player(player_t *player) {
     SDL_DestroyTexture(player_texture_left);
     SDL_DestroyTexture(player_texture_right);

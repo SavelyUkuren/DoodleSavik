@@ -10,6 +10,7 @@
 #include "../common/vec2.h"
 #include "../config.h"
 #include "../assets_p.h"
+#include "audio_controller.h"
 
 typedef enum player_direction {
     NONE,
@@ -30,5 +31,7 @@ void player_init(player_t *player, SDL_Renderer *renderer);
 void player_logic(player_t *player, float delta);
 void render_player(SDL_Renderer *renderer, player_t *player);
 void destroy_player(player_t *player);
+
+void player_jump(player_t *player, float with_force);
 
 #endif // PLAYER_H

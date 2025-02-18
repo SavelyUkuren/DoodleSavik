@@ -18,7 +18,6 @@ void world_init(world_t *world, SDL_Renderer *renderer) {
 
     init_background(renderer);
     blocks_init();
-    jumpers_init();
 
 }
 
@@ -26,9 +25,7 @@ void world_logic(world_t *world, float delta) {
     background_update(delta);
     update_camera(world, delta);
     blocks_update(delta);
-    jumpers_update(delta);
     player_on_block(world->player, delta);
-    player_on_jumper(world->player, delta);
 
     if (world->player->position.y + world->player->size.h > WINDOW_HEIGHT
         && !is_game_over) {
@@ -41,7 +38,6 @@ void render_world(SDL_Renderer *renderer, world_t *world) {
 
     render_background(renderer);
     render_blocks(renderer);
-    render_jumpers(renderer);
 
 }
 
@@ -49,7 +45,6 @@ void world_destroy(world_t *world) {
 
     SDL_DestroyTexture(game_tiles);
     destroy_blocks();
-    destroy_jumpers();
     destroy_background();
 }
 
@@ -64,11 +59,10 @@ bool is_on_top(rect_t *rect1, rect_t *rect2, float velocity_y) {
 void update_camera(world_t *world, float delta) {
     world_offset_y = -world->player->velocity.dy * 100 * delta;
 
-    if (world->player->position.y < WINDOW_HEIGHT / 3) {
-        world->player->position.y = WINDOW_HEIGHT / 3;
+    if (world->player->position.y < WINDOW_HEIGHT / 2.5) {
+        world->player->position.y = WINDOW_HEIGHT / 2.5;
 
         blocks_offset(world_offset_y, delta);
-        jumpers_offset(world_offset_y, delta);
         background_offset(world_offset_y, delta);
 
         world->player->score += (int)roundf(100.0f * delta);
@@ -77,7 +71,6 @@ void update_camera(world_t *world, float delta) {
     if (world->player->position.y + world->player->size.h > WINDOW_HEIGHT &&
         world->player->position.x < WINDOW_HEIGHT * 2) {
         blocks_offset(world_offset_y, delta);
-        jumpers_offset(world_offset_y, delta);
         background_offset(world_offset_y, delta);
     }
 
