@@ -1,59 +1,55 @@
 //
 // Created by Савелий Никулин on 10.02.2025.
 //
+#define MINIAUDIO_IMPLEMENTATION
 
 #include "audio_controller.h"
+#include "../lib/miniaudio.h"
 
-Mix_Chunk *jump_sound;
-Mix_Chunk *jumper_sound;
-Mix_Chunk *fall_sound;
+ma_engine engine;
+ma_sound jump_sound, jumper_sound, fall_sound;
 
 void audio_controller_init() {
-    SDL_AudioSpec desired;
-    desired.freq = 48000;
-    desired.channels = 2;
-    desired.format = SDL_AUDIO_S16;
 
-    if (!Mix_OpenAudio(0, &desired)) {
-        printf("Can't open audio: %s\n", SDL_GetError());
+    if (ma_engine_init(NULL, &engine) != MA_SUCCESS) {
+        printf("Failed to initialize audio engine\n");
         return;
     }
 
-    jump_sound = Mix_LoadWAV(JUMP_SOUND);
-    if (!jump_sound) {
+    if (ma_sound_init_from_file(&engine, JUMP_SOUND, MA_SOUND_FLAG_DECODE, NULL, NULL, &jump_sound) != MA_SUCCESS) {
         printf("Error. Ca't open '%s'\n", JUMP_SOUND);
         return;
     }
 
-    jumper_sound = Mix_LoadWAV(JUMPER_SOUND);
-    if (!jumper_sound) {
+    if (ma_sound_init_from_file(&engine, JUMPER_SOUND, MA_SOUND_FLAG_DECODE, NULL, NULL, &jumper_sound) != MA_SUCCESS) {
         printf("Error. Ca't open '%s'\n", JUMPER_SOUND);
         return;
     }
 
-    fall_sound = Mix_LoadWAV(FALL_SOUND);
-    if (!fall_sound) {
+    if (ma_sound_init_from_file(&engine, FALL_SOUND, MA_SOUND_FLAG_DECODE, NULL, NULL, &fall_sound) != MA_SUCCESS) {
         printf("Error. Ca't open '%s'\n", FALL_SOUND);
+        return;
     }
 
 }
 
 void play_jump_sound() {
     if (SOUND_ON)
-        Mix_PlayChannel(-1, jump_sound, 0);
+        ma_sound_start(&jump_sound);
 }
 
 void play_jumper_sound() {
     if (SOUND_ON)
-        Mix_PlayChannel(-1, jumper_sound, 0);
+        ma_sound_start(&jumper_sound);
 }
 
 void play_fall_sound() {
     if (SOUND_ON)
-        Mix_PlayChannel(-1, fall_sound, 0);
+        ma_sound_start(&fall_sound);
 }
 
 void destroy_audio() {
-    Mix_FreeChunk(jump_sound);
-    Mix_CloseAudio();
+    ma_sound_uninit(&jump_sound);
+    ma_sound_uninit(&jumper_sound);
+    ma_sound_uninit(&fall_sound);
 }

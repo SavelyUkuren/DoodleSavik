@@ -8,13 +8,17 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/savely/Загрузки/Telegram Desktop/DoodleSavik/DoodleSavik/src/common/point.c" "CMakeFiles/DoodleSavik.dir/src/common/point.c.o" "gcc" "CMakeFiles/DoodleSavik.dir/src/common/point.c.o.d"
-  "/home/savely/Загрузки/Telegram Desktop/DoodleSavik/DoodleSavik/src/common/rect_t.c" "CMakeFiles/DoodleSavik.dir/src/common/rect_t.c.o" "gcc" "CMakeFiles/DoodleSavik.dir/src/common/rect_t.c.o.d"
-  "/home/savely/Загрузки/Telegram Desktop/DoodleSavik/DoodleSavik/src/common/s_random.c" "CMakeFiles/DoodleSavik.dir/src/common/s_random.c.o" "gcc" "CMakeFiles/DoodleSavik.dir/src/common/s_random.c.o.d"
-  "/home/savely/Загрузки/Telegram Desktop/DoodleSavik/DoodleSavik/src/main.c" "CMakeFiles/DoodleSavik.dir/src/main.c.o" "gcc" "CMakeFiles/DoodleSavik.dir/src/main.c.o.d"
-  "/home/savely/Загрузки/Telegram Desktop/DoodleSavik/DoodleSavik/src/objects/player.c" "CMakeFiles/DoodleSavik.dir/src/objects/player.c.o" "gcc" "CMakeFiles/DoodleSavik.dir/src/objects/player.c.o.d"
-  "/home/savely/Загрузки/Telegram Desktop/DoodleSavik/DoodleSavik/src/objects/world.c" "CMakeFiles/DoodleSavik.dir/src/objects/world.c.o" "gcc" "CMakeFiles/DoodleSavik.dir/src/objects/world.c.o.d"
-  "" "DoodleSavik" "gcc" "CMakeFiles/DoodleSavik.dir/link.d"
+  "/Users/death/Doc/CProjects/DoodleSavik/src/assets_p.c" "CMakeFiles/DoodleSavik.dir/src/assets_p.c.o" "gcc" "CMakeFiles/DoodleSavik.dir/src/assets_p.c.o.d"
+  "/Users/death/Doc/CProjects/DoodleSavik/src/common/point.c" "CMakeFiles/DoodleSavik.dir/src/common/point.c.o" "gcc" "CMakeFiles/DoodleSavik.dir/src/common/point.c.o.d"
+  "/Users/death/Doc/CProjects/DoodleSavik/src/common/rect_t.c" "CMakeFiles/DoodleSavik.dir/src/common/rect_t.c.o" "gcc" "CMakeFiles/DoodleSavik.dir/src/common/rect_t.c.o.d"
+  "/Users/death/Doc/CProjects/DoodleSavik/src/common/s_random.c" "CMakeFiles/DoodleSavik.dir/src/common/s_random.c.o" "gcc" "CMakeFiles/DoodleSavik.dir/src/common/s_random.c.o.d"
+  "/Users/death/Doc/CProjects/DoodleSavik/src/main.c" "CMakeFiles/DoodleSavik.dir/src/main.c.o" "gcc" "CMakeFiles/DoodleSavik.dir/src/main.c.o.d"
+  "/Users/death/Doc/CProjects/DoodleSavik/src/objects/assets_controller.c" "CMakeFiles/DoodleSavik.dir/src/objects/assets_controller.c.o" "gcc" "CMakeFiles/DoodleSavik.dir/src/objects/assets_controller.c.o.d"
+  "/Users/death/Doc/CProjects/DoodleSavik/src/objects/audio_controller.c" "CMakeFiles/DoodleSavik.dir/src/objects/audio_controller.c.o" "gcc" "CMakeFiles/DoodleSavik.dir/src/objects/audio_controller.c.o.d"
+  "/Users/death/Doc/CProjects/DoodleSavik/src/objects/background.c" "CMakeFiles/DoodleSavik.dir/src/objects/background.c.o" "gcc" "CMakeFiles/DoodleSavik.dir/src/objects/background.c.o.d"
+  "/Users/death/Doc/CProjects/DoodleSavik/src/objects/blocks_controller.c" "CMakeFiles/DoodleSavik.dir/src/objects/blocks_controller.c.o" "gcc" "CMakeFiles/DoodleSavik.dir/src/objects/blocks_controller.c.o.d"
+  "/Users/death/Doc/CProjects/DoodleSavik/src/objects/player.c" "CMakeFiles/DoodleSavik.dir/src/objects/player.c.o" "gcc" "CMakeFiles/DoodleSavik.dir/src/objects/player.c.o.d"
+  "/Users/death/Doc/CProjects/DoodleSavik/src/objects/world.c" "CMakeFiles/DoodleSavik.dir/src/objects/world.c.o" "gcc" "CMakeFiles/DoodleSavik.dir/src/objects/world.c.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.
