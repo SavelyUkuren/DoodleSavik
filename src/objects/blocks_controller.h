@@ -14,6 +14,7 @@
 //#include "jumpers_controller.h"
 #include "player.h"
 #include "audio_controller.h"
+#include "bonus/propeller.h"
 
 extern player_t player;
 
@@ -50,6 +51,11 @@ typedef struct block_t {
     bool is_movable;
     vec2 velocity;
     block_direction direction;
+
+    //bonus
+    bool has_propeller;
+    propeller_t propeller;
+
 } block_t;
 
 extern const int blocks_count;
@@ -64,6 +70,7 @@ void blocks_offset(float offset, float delta);
 void generate_new_blocks(float delta);
 void update_movable_blocks(float delta);
 void update_jumpers(float delta);
+void update_propellers(float delta);
 
 point new_block_position();
 float random_dx_velocity();

@@ -57,6 +57,7 @@ void game_setup() {
     player.velocity.dx = 0;
     player.velocity.dy = PLAYER_JUMP_FORCE;
     player.score = 0;
+    player.current_bonus = BONUS_NONE;
 
     world.player = &player;
     world_init(&world, renderer);
@@ -90,7 +91,7 @@ void game_loop() {
         } else if (key[SDL_SCANCODE_SPACE]) {
 
         } else {
-            player.direction = NONE;
+            player.direction = DIR_NONE;
         }
 
         player_logic(&player, delta);

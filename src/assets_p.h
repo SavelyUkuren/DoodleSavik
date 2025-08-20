@@ -23,10 +23,12 @@ extern char *PLAYER_RIGHT_TEXTURE;
 extern char *PLAYER_ODSKOK_LEFT_TEXTURE;
 extern char *PLAYER_ODSKOK_RIGHT_TEXTURE;
 extern char *GAME_TILES;
+extern char *PROPELLER_TEXTURE;
 
 extern char *JUMP_SOUND;
 extern char *JUMPER_SOUND;
 extern char *FALL_SOUND;
+extern char *PROPELLER_SOUND;
 
 void load_assets_paths(char *argv[]);
 void free_assets();

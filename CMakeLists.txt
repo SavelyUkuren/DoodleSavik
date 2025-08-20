@@ -36,6 +36,8 @@ add_executable(DoodleSavik src/main.c
         src/objects/audio_controller.h
         src/assets_p.c
         src/lib/miniaudio.h
+        src/objects/bonus/propeller.h
+        src/objects/bonus/propeller.c
 )
 
 target_link_libraries(DoodleSavik SDL3::SDL3 SDL3_image::SDL3_image SDL3_ttf::SDL3_ttf pthread dl)

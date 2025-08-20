@@ -8,6 +8,7 @@ float world_offset_y = 0;
 SDL_Texture *game_tiles;
 
 bool is_game_over = false;
+float score_timer = 0;
 
 void world_init(world_t *world, SDL_Renderer *renderer) {
 
@@ -18,7 +19,7 @@ void world_init(world_t *world, SDL_Renderer *renderer) {
 
     init_background(renderer);
     blocks_init();
-
+    propeller_init(renderer);
 }
 
 void world_logic(world_t *world, float delta) {
@@ -65,7 +66,11 @@ void update_camera(world_t *world, float delta) {
         blocks_offset(world_offset_y, delta);
         background_offset(world_offset_y, delta);
 
-        world->player->score += (int)roundf(100.0f * delta);
+        score_timer += delta;
+        if (score_timer > 0.05) {
+            world->player->score += 1;
+            score_timer -= 0.05;
+        }
     }
 
     if (world->player->position.y + world->player->size.h > WINDOW_HEIGHT &&

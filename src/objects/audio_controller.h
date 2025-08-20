@@ -15,6 +15,7 @@ void audio_controller_init();
 void play_jump_sound();
 void play_jumper_sound();
 void play_fall_sound();
+void play_propeller_sound();
 
 void destroy_audio();
 #endif //AUDIO_CONTROLLER_H

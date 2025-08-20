@@ -11,10 +11,12 @@ char *PLAYER_RIGHT_TEXTURE;
 char *PLAYER_ODSKOK_LEFT_TEXTURE;
 char *PLAYER_ODSKOK_RIGHT_TEXTURE;
 char *GAME_TILES;
+char *PROPELLER_TEXTURE;
 
 char *JUMP_SOUND;
 char *JUMPER_SOUND;
 char *FALL_SOUND;
+char *PROPELLER_SOUND;
 
 void load_assets_paths(char *argv[]) {
 
@@ -37,6 +39,9 @@ void load_assets_paths(char *argv[]) {
     PLAYER_ODSKOK_RIGHT_TEXTURE = malloc(PATH_MAX);
     snprintf(PLAYER_ODSKOK_RIGHT_TEXTURE, PATH_MAX, "%s/%s", dir, "assets/blue-lik-right-odskok@2x.png");
 
+    PROPELLER_TEXTURE = malloc(PATH_MAX);
+    snprintf(PROPELLER_TEXTURE, PATH_MAX, "%s/%s", dir, "assets/propeller@2x.png");
+
     GAME_TILES = malloc(PATH_MAX);
     snprintf(GAME_TILES, PATH_MAX, "%s/%s", dir, "assets/game-tiles@2x.png");
 
@@ -49,6 +54,9 @@ void load_assets_paths(char *argv[]) {
     FALL_SOUND = malloc(PATH_MAX);
     snprintf(FALL_SOUND, PATH_MAX, "%s/%s", dir, "assets/pada.wav");
 
+    PROPELLER_SOUND = malloc(PATH_MAX);
+    snprintf(PROPELLER_SOUND, PATH_MAX, "%s/%s", dir, "assets/propeller1.wav");
+
     ASSETS_DIR = "assets/";
 }
 
@@ -58,8 +66,10 @@ void free_assets() {
     free(PLAYER_RIGHT_TEXTURE);
     free(PLAYER_ODSKOK_LEFT_TEXTURE);
     free(PLAYER_ODSKOK_RIGHT_TEXTURE);
+    free(PROPELLER_TEXTURE);
     free(GAME_TILES);
     free(JUMP_SOUND);
     free(JUMPER_SOUND);
     free(FALL_SOUND);
+    free(PROPELLER_SOUND);
 }

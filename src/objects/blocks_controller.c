@@ -39,6 +39,14 @@ void blocks_init() {
         jumper.is_jumping = false;
         blocks[i].has_jumper = false;
         blocks[i].jumper = jumper;
+
+        propeller_t propeller;
+        propeller.rect.x = -100;
+        propeller.rect.y = -100;
+        propeller.rect.w = 48;
+        propeller.rect.h = 48;
+        blocks[i].has_propeller = false;
+        blocks[i].propeller = propeller;
     }
 
 }
@@ -48,6 +56,7 @@ void blocks_update(float delta) {
     generate_new_blocks(delta);
     update_movable_blocks(delta);
     update_jumpers(delta);
+    update_propellers(delta);
 }
 
 void blocks_offset(float offset, float delta) {
@@ -55,6 +64,9 @@ void blocks_offset(float offset, float delta) {
         blocks[i].position.y += offset;
         if (blocks[i].has_jumper) {
             blocks[i].jumper.position.y += offset;
+        }
+        if (blocks[i].has_propeller) {
+            blocks[i].propeller.rect.y += offset;
         }
     }
 }
@@ -150,6 +162,10 @@ void render_blocks(SDL_Renderer *renderer) {
             }
             SDL_RenderTexture(renderer, game_tiles, &src_rect, &jumper_r);
         }
+
+        if (blocks[i].has_propeller) {
+            render_propeller(renderer, &blocks[i].propeller, PROPELLER_IDLE, 0);
+        }
     }
 
 }
@@ -179,6 +195,15 @@ void generate_new_blocks(float delta) {
                 blocks[i].jumper.position.y = blocks[i].position.y - blocks[i].jumper.size.h + 4;
             }
 
+            if (random_from_range(0, 100) < PROPELLER_PROBALITY 
+            && !blocks[i].has_propeller
+            && !blocks[i].is_movable
+            && player.current_bonus == BONUS_NONE) {
+                blocks[i].has_propeller = true;
+                float random_x = random_from_range(blocks[i].position.x, blocks[i].position.x + blocks[i].size.w - blocks[i].propeller.rect.w);
+                blocks[i].propeller.rect.x = random_x;
+                blocks[i].propeller.rect.y = blocks[i].position.y - blocks[i].propeller.rect.h + 4;
+            }
 
         }
     }
@@ -225,6 +250,27 @@ void update_jumpers(float delta) {
                 blocks[i].jumper.current_time_for_reset = 0;
                 blocks[i].jumper.is_jumping = false;
             }
+        }
+    }
+}
+
+void update_propellers(float delta) {
+    for (int i = 0 ; i < BLOCKS_COUNT ; i++) {
+        if (blocks[i].has_propeller) {
+            if (blocks[i].position.y > WINDOW_HEIGHT) {
+                blocks[i].has_propeller = false;
+                blocks[i].propeller.rect.x = -1000;
+                blocks[i].propeller.rect.y = -1000;
+            }
+        }
+
+        rect_t p_r = {player.position.x, player.position.y, player.size.w, player.size.h};
+        if (has_intersection(p_r, blocks[i].propeller.rect)) {
+            player.current_bonus = BONUS_PROPELLER;
+            blocks[i].has_propeller = false;
+            blocks[i].propeller.rect.x = -1000;
+            blocks[i].propeller.rect.y = -1000;
+            play_propeller_sound();
         }
     }
 }

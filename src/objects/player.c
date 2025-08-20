@@ -1,4 +1,5 @@
 #include "player.h"
+#include "bonus/propeller.h"
 
 char score_text[32];
 
@@ -10,6 +11,13 @@ SDL_Texture *player_texture_odskok_right;
 player_direction last_direction = LEFT;
 float player_odskok_current_time = 0;
 bool is_odskok = false;
+bool is_gravity = true;
+
+float propeller_time = 0;
+
+float p_delta = 0;
+
+propeller_t b_propeller = {-100, -100, 48, 48};
 
 void player_init(player_t *player, SDL_Renderer *renderer) {
 
@@ -47,16 +55,22 @@ void player_logic(player_t *player, float delta) {
         player->velocity.dx += PLAYER_ACCELERATION * delta;
         last_direction = RIGHT;
         break;
-    case NONE:
+    case DIR_NONE:
         if (player->velocity.dx < 0) {
             player->velocity.dx += PLAYER_ACCELERATION * delta;
+            if (player->velocity.dx > 0)
+                player->velocity.dx = 0;
         }
         if (player->velocity.dx > 0) {
             player->velocity.dx += -PLAYER_ACCELERATION * delta;
+            if (player->velocity.dx < 0)
+                player->velocity.dx = 0;
         }
         break;
     }
-    player->velocity.dy += (float)GRAVITY * delta;
+    if (is_gravity)
+        player->velocity.dy += (float)GRAVITY * delta;
+
     if (player->velocity.dy > 10) {
         player->velocity.dy = 10;
     }
@@ -90,6 +104,24 @@ void player_logic(player_t *player, float delta) {
         player_odskok_current_time = 0;
         is_odskok = false;
     }
+
+    if (player->current_bonus == BONUS_PROPELLER) {
+        player->velocity.dy = -10;
+        b_propeller.rect.x = player->position.x + player->size.w / 2 - b_propeller.rect.w / 2;
+        b_propeller.rect.y = player->position.y;
+        is_gravity = false;
+        propeller_time += delta;
+
+        if (propeller_time >= PROPELLER_MAX_TIME) {
+            is_gravity = true;
+            propeller_time = 0;
+            b_propeller.rect.x = -1000;
+            b_propeller.rect.y = -1000;
+            player->current_bonus = BONUS_NONE;
+        }
+    }
+
+    p_delta = delta;
 }
 
 void render_player(SDL_Renderer *renderer, player_t *player) {
@@ -110,7 +142,7 @@ void render_player(SDL_Renderer *renderer, player_t *player) {
             case RIGHT:
                 SDL_RenderTexture(renderer, player_texture_odskok_right, NULL, &r);
             break;
-            case NONE:
+            case DIR_NONE:
                 break;
         }
     } else {
@@ -121,13 +153,20 @@ void render_player(SDL_Renderer *renderer, player_t *player) {
             case RIGHT:
                 SDL_RenderTexture(renderer, player_texture_right, NULL, &r);
             break;
-            case NONE:
+            case DIR_NONE:
                 break;
         }
     }
 
+    if (player->current_bonus != BONUS_NONE)
+        render_propeller(renderer, &b_propeller, PROPELLER_SPINNING, p_delta);
+
 
     SDL_RenderDebugText(renderer, 10, 50, score_text);
+}
+
+void add_propeller() {
+
 }
 
 void player_jump(player_t *player, float with_force) {
@@ -140,7 +179,5 @@ void destroy_player(player_t *player) {
     SDL_DestroyTexture(player_texture_right);
     SDL_DestroyTexture(player_texture_odskok_left);
     SDL_DestroyTexture(player_texture_odskok_right);
-
-
 
 }

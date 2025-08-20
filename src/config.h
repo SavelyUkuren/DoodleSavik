@@ -6,6 +6,7 @@
 #define WINDOW_TITLE "DoodleSavik"
 #define ENABLE_VSYNC true
 #define SOUND_ON true
+#define VOLUME 0.1
 
 #define GRAVITY 13.81
 #define GAME_SCALE 1.5
@@ -15,8 +16,10 @@
 #define PLAYER_JUMP_FORCE -10
 #define PLAYER_ON_JUMPER_FORCE -16
 
-#define JUMPER_PROBALITY 11 //%
+#define JUMPER_PROBALITY 6 //%
+#define PROPELLER_PROBALITY 3
 #define MOVABLE_BLOCK_VELOCITY_MIN 70
 #define MOVABLE_BLOCK_VELOCITY_MAX 180
+#define PROPELLER_MAX_TIME 2 // sec
 
 #endif // CONFIG_H
